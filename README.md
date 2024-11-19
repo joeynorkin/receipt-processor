@@ -8,7 +8,11 @@ Assuming you hava Java 17 installed
 # Running the service
 
 ```bash
+# Run on default port (8080)
 ./gradlew :bootRun
+
+# Specify port
+./gradlew bootRun --args='--server.port=8081'
 ```
 
 # Using the APIs
