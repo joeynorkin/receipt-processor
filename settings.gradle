@@ -1,1 +1,3 @@
 rootProject.name = 'receipt-processor'
+
+include 'receipt-processor-service'
