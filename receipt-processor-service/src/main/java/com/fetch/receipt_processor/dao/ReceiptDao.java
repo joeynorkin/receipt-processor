@@ -1,16 +1,19 @@
 package com.fetch.receipt_processor.dao;
 
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.map.IMap;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ReceiptDao {
 
-    //TODO: store in HZ map for multi node envs
-    private final Map<String, ReceiptEntity> receipts = new ConcurrentHashMap<>();
+    private final IMap<String, ReceiptEntity> receipts;
+
+    public ReceiptDao(HazelcastInstance hazelcastInstance) {
+        this.receipts = hazelcastInstance.getMap("receipts");
+    }
 
     public ReceiptEntity create(ReceiptEntity entity) {
         String id = generateRandomId();
@@ -23,8 +26,8 @@ public class ReceiptDao {
         return receipts.get(id);
     }
 
-
     private String generateRandomId() {
         return UUID.randomUUID().toString();
     }
+
 }

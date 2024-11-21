@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: receipt-processor
+
+server:
+  port: 8081
