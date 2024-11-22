@@ -14,7 +14,7 @@ Run the service on port 8081 simple by executing.
 Or you can run multiple instances behind a loadbalancer. The API with then be listening on port 8080:
 ```bash
 # Open a new terminal window for each of the following:
-./gradlew :registration:bootRun
+./gradlew :eureka-server:bootRun
 ./gradlew :loadbalancer:bootRun
 ./gradlew :receipt-processor-service:bootRun --args='--server.port=8081'
 ./gradlew :receipt-processor-service:bootRun --args='--server.port=8082'

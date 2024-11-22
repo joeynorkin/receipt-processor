@@ -2,4 +2,4 @@ rootProject.name = 'receipt-processor'
 
 include 'receipt-processor-service'
 include 'loadbalancer'
-include 'registration'
+include 'eureka-server'
