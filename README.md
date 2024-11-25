@@ -4,7 +4,7 @@ In the project root directory, run:
 docker compose up -d --build
 ```
 This will expose the APIs on port 8080. The app will run with multiple receipt-processor-service
-instances hidden behind a loadbalancer. Receipts are currently stored in a hazelcast map accessible
+instances hidden behind a round robin loadbalancer. Receipts are currently stored in a hazelcast map accessible
 from each instance.
 
 To stop the app, run:
@@ -12,20 +12,22 @@ To stop the app, run:
 docker compose down
 ```
 
-# Building the app
+# Run app from command line
+
+### Building the app
 Assuming you hava Java 17 installed
 
 ```bash
 ./gradlew clean build
 ```
 
-# Running the service
+### Running the service
 Run the service on port 8081 simple by executing.
 ```bash
 ./gradlew :receipt-processor-service:bootRun
 ```
 
-Or you can run multiple instances behind a loadbalancer. The API with then be listening on port 8080:
+Or you can run multiple instances behind a loadbalancer. The API will then be listening on port 8080:
 ```bash
 # Open a new terminal window for each of the following:
 ./gradlew :eureka-server:bootRun
@@ -71,7 +73,7 @@ curl -X POST http://127.0.0.1:8080/receipts/process \
   "total": "35.35"
 }'
 ```
-### Response
+#### Response
 
 ```bash
 {"id":"bfad6dc3-8a9f-4df3-9a51-f1b101d8f261"}
@@ -83,7 +85,7 @@ curl -X POST http://127.0.0.1:8080/receipts/process \
 curl http://127.0.0.1:8080/receipts/bfad6dc3-8a9f-4df3-9a51-f1b101d8f261/points
 ```
 
-### Response
+#### Response
 
 ```bash
 {"points":28}

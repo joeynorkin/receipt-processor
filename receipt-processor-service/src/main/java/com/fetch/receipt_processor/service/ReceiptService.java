@@ -45,11 +45,6 @@ public class ReceiptService {
         return points;
     }
 
-    private Receipt toDto(ReceiptEntity entity) {
-        // TODO
-        return new Receipt();
-    }
-
     private ReceiptEntity toEntity(Receipt receipt) {
         LocalDate purchaseDate = receipt.getPurchaseDate();
         LocalTime purchaseTime = receipt.getPurchaseTime();
