@@ -1,3 +1,17 @@
+# Run app with docker
+In the project root directory, run:
+```bash
+docker compose up -d --build
+```
+This will expose the APIs on port 8080. The app will run with multiple receipt-processor-service
+instances hidden behind a loadbalancer. Receipts are currently stored in a hazelcast map accessible
+from each instance.
+
+To stop the app, run:
+```bash
+docker compose down
+```
+
 # Building the app
 Assuming you hava Java 17 installed
 

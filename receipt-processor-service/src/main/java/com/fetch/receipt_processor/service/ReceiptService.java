@@ -4,12 +4,14 @@ import com.fetch.receipt_processor.dao.ItemEntity;
 import com.fetch.receipt_processor.dao.ReceiptDao;
 import com.fetch.receipt_processor.dao.ReceiptEntity;
 import com.fetch.receipt_processor.domain.Receipt;
+import com.fetch.receipt_processor.exception.ReceiptNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReceiptService {
@@ -27,8 +29,11 @@ public class ReceiptService {
     }
 
     public int getPoints(String id) {
-        ReceiptEntity receiptEntity = receiptDao.get(id);
-        return calculatePoints(receiptEntity);
+        Optional<ReceiptEntity> receiptEntity = receiptDao.get(id);
+        if (receiptEntity.isEmpty()) {
+            throw new ReceiptNotFoundException(id);
+        }
+        return calculatePoints(receiptEntity.get());
     }
 
     private int calculatePoints(ReceiptEntity receiptEntity) {
@@ -41,6 +46,7 @@ public class ReceiptService {
     }
 
     private Receipt toDto(ReceiptEntity entity) {
+        // TODO
         return new Receipt();
     }
 

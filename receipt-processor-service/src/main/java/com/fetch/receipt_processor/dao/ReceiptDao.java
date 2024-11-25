@@ -4,6 +4,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,8 +23,8 @@ public class ReceiptDao {
         return receipts.get(id);
     }
 
-    public ReceiptEntity get(String id) {
-        return receipts.get(id);
+    public Optional<ReceiptEntity> get(String id) {
+        return Optional.ofNullable(receipts.get(id));
     }
 
     private String generateRandomId() {
