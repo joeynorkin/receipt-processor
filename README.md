@@ -1,5 +1,5 @@
 # Receipt Processor
-A highly available receipt processor API powered by Spring Boot, Eureka and Hazelcast.
+A highly-available receipt processor API based on Spring Boot, Eureka and Hazelcast.
 
 ## Run app with docker
 In the project's root directory, run:
