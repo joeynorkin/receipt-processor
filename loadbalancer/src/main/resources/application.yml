@@ -1,13 +1,7 @@
 spring:
   application:
     name: loadbalancer
-  cloud:
-    gateway:
-      routes:
-        - id: myRoute
-          uri: lb://receipt-processor
-          predicates:
-            - Path=/receipts/**
+
 server:
   port: 8080
 
