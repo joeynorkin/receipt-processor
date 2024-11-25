@@ -1,11 +1,13 @@
 # Run app with docker
-In the project root directory, run:
+In the project's root directory, run:
 ```bash
 docker compose up -d --build
 ```
-This will expose the APIs on port 8080. The app will run with multiple receipt-processor-service
-instances hidden behind a round robin loadbalancer. Receipts are currently stored in a hazelcast map accessible
-from each instance.
+This will expose the APIs on port 8080. The app will run with multiple receipt-processor-service instances hidden
+behind a round-robin loadbalancer. Receipts are currently stored in a hazelcast map accessible from each instance.
+
+Note: You might have to wait a minute for all the services to register with Eureka. If you visit http://localhost:8761,
+you should see a loadbalancer and at least one receipt processor instance.
 
 To stop the app, run:
 ```bash
