@@ -16,7 +16,7 @@ public class LoadbalancerApplication {
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("myRoute", p -> p
+                .route(p -> p
                         .path("/receipts/**")
                         .uri("lb://receipt-processor"))
                 .build();
