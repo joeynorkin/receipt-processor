@@ -63,6 +63,7 @@ public class ReceiptEntity {
     }
 
     public void setTotal(BigDecimal total) {
-        this.total = total.setScale(2, RoundingMode.HALF_EVEN);;
+        this.total = total.setScale(2, RoundingMode.HALF_EVEN);
+        ;
     }
 }
