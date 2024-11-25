@@ -1,53 +1,14 @@
-FROM gradle:8.3-jdk17 AS build
-
-ARG SERVICE_NAME=loadbalancer
+FROM eclipse-temurin:17.0.13_11-jdk-jammy AS builder
 
 WORKDIR /app
 
-COPY gradlew settings.gradle build.gradle /app/
-COPY gradle /app/gradle
-COPY ${SERVICE_NAME}/ /app/${SERVICE_NAME}
+COPY gradlew settings.gradle build.gradle ./
+COPY gradle ./gradle
+COPY loadbalancer ./loadbalancer
+RUN ./gradlew :loadbalancer:clean :loadbalancer:bootJar
 
-WORKDIR /app/${SERVICE_NAME}
-RUN ./gradlew clean bootJar
-
-# Stage 2: Create the runtime image
-FROM openjdk:17-jdk-slim
-
-# Set the working directory
+FROM eclipse-temurin:17.0.13_11-jre-jammy AS final
 WORKDIR /app
-
-# Copy the JAR from the build stage
-COPY --from=build /app/${SERVICE_NAME}/build/libs/${SERVICE_NAME}.jar app.jar
-
-# Expose the application port
+COPY --from=builder /app/loadbalancer/build/libs/loadbalancer.jar app.jar
 EXPOSE 8080
-
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
-# FROM gradle:8.3-jdk17 AS build
-#
-# WORKDIR /app
-#
-# COPY gradlew settings.gradle build.gradle /app/
-# COPY gradle /app/gradle
-# COPY loadbalancer/ /app/loadbalancer
-#
-# WORKDIR /app/loadbalancer
-# RUN ./gradlew clean bootJar
-#
-# # Stage 2: Create the runtime image
-# FROM openjdk:17-jdk-slim
-#
-# # Set the working directory
-# WORKDIR /app
-#
-# # Copy the JAR from the build stage
-# COPY --from=build /app/loadbalancer/build/libs/loadbalancer.jar app.jar
-#
-# # Expose the application port
-# EXPOSE 8080
-#
-# # Run the application
-# ENTRYPOINT ["java", "-jar", "app.jar"]

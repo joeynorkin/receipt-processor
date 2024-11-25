@@ -1,25 +1,14 @@
-FROM gradle:8.3-jdk17 AS build
+FROM eclipse-temurin:17.0.13_11-jdk-jammy AS builder
 
 WORKDIR /app
 
-COPY gradlew settings.gradle build.gradle /app/
-COPY gradle /app/gradle
-COPY eureka-server/ /app/eureka-server
+COPY gradlew settings.gradle build.gradle ./
+COPY gradle ./gradle
+COPY eureka-server ./eureka-server
+RUN ./gradlew :eureka-server:clean :eureka-server:bootJar
 
-WORKDIR /app/eureka-server
-RUN ./gradlew clean bootJar
-
-# Stage 2: Create the runtime image
-FROM openjdk:17-jdk-slim
-
-# Set the working directory
+FROM eclipse-temurin:17.0.13_11-jre-jammy AS final
 WORKDIR /app
-
-# Copy the JAR from the build stage
-COPY --from=build /app/eureka-server/build/libs/eureka-server.jar app.jar
-
-# Expose the application port
+COPY --from=builder /app/eureka-server/build/libs/eureka-server.jar app.jar
 EXPOSE 8761
-
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

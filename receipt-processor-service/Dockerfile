@@ -1,25 +1,14 @@
-FROM gradle:8.3-jdk17 AS build
+FROM eclipse-temurin:17.0.13_11-jdk-jammy AS builder
 
 WORKDIR /app
 
-COPY gradlew settings.gradle build.gradle /app/
-COPY gradle /app/gradle
-COPY receipt-processor-service/ /app/receipt-processor-service
+COPY gradlew settings.gradle build.gradle ./
+COPY gradle ./gradle
+COPY receipt-processor-service ./receipt-processor-service
+RUN ./gradlew :receipt-processor-service:clean :receipt-processor-service:bootJar
 
-WORKDIR /app/receipt-processor-service
-RUN ./gradlew clean bootJar
-
-# Stage 2: Create the runtime image
-FROM openjdk:17-jdk-slim
-
-# Set the working directory
+FROM eclipse-temurin:17.0.13_11-jre-jammy AS final
 WORKDIR /app
-
-# Copy the JAR from the build stage
-COPY --from=build /app/receipt-processor-service/build/libs/receipt-processor-service.jar app.jar
-
-# Expose the application port
+COPY --from=builder /app/receipt-processor-service/build/libs/receipt-processor-service.jar app.jar
 EXPOSE 8081
-
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

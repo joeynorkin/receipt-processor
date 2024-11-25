@@ -1,0 +1,32 @@
+services:
+  eureka-server:
+    build:
+      context: .
+      dockerfile: ./eureka-server/Dockerfile
+    container_name: eureka-server
+    ports:
+      - '8761:8761'
+  loadbalancer:
+    build:
+      context: .
+      dockerfile: ./loadbalancer/Dockerfile
+    container_name: loadbalancer
+    environment:
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
+    ports:
+      - '8080:8080'
+    depends_on:
+      eureka-server:
+        condition: service_started
+  receipt-processor-service:
+    build:
+      context: .
+      dockerfile: ./receipt-processor-service/Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
+    depends_on:
+      eureka-server:
+        condition: service_started
+    deploy:
+      mode: replicated
+      replicas: 3
