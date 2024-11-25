@@ -1,4 +1,7 @@
-# Run app with docker
+# Receipt Processor
+A highly available receipt processor API powered by Spring Boot, Eureka and Hazelcast.
+
+## Run app with docker
 In the project's root directory, run:
 ```bash
 docker compose up -d --build
@@ -14,7 +17,7 @@ To stop the app, run:
 docker compose down
 ```
 
-# Run app from command line
+## Run app from command line
 
 ### Building the app
 Assuming you hava Java 17 installed
@@ -40,7 +43,7 @@ Or you can run multiple instances behind a loadbalancer. The API will then be li
 # ...
 ```
 Note: You might have to wait for service registration to complete before calling the APIs.
-# Using the APIs
+## Using the APIs
 
 ### Process a receipt
 ```bash
